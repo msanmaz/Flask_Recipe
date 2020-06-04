@@ -1,0 +1,35 @@
+<form method="POST">
+    <div class='col-xs-12 col-sm-12 col-md-10 col-lg-10'>
+        <div class='input-group'>
+            <input class='form-control' type='text' name='ing_name'
+                placeholder='Enter ingredients separated by commas...'/>
+            <span class="input-group-btn">
+            <button type='submit' class='btn btn-default'>
+                <span class='glyphicon glyphicon-search'>Search Recipe</span>
+            </button>
+            </span>
+        </div>
+    </div>
+</form>
+
+
+<div class='col-xs-12 col-sm-12'>
+    {% if response !=undefined and response|length >0 %}
+    <h2>Recipes Includes these ingredients</h2>
+    {% else %}
+    {% if response!="No recipes found" %}
+    <p>No recipes found</p>
+    {% else %}
+    <p></p>
+    {% endif %}
+    {% endif %}
+</div>
+
+<div class="results">
+    {% for recip in response %}
+<div class="col-xs-3 col-sm-3">
+    <img id="imgRecipe" src="{{recip['image']}}">
+    <button>{{recip['title']}}</button>
+</div>
+{% endfor %}
+</div>

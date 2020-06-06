@@ -38,7 +38,7 @@
     {% for recip in response %}
 <div class="col-xs-3 col-sm-3">
     <img id="imgRecipe" src="{{recip['image']}}">
-<button type="button" class="mert btn btn-light" id="{{recip.id}}">{{recip.title}}</button>
+<button type="button" class="mert btn btn-light" onclick="recipeInfo(id)" id="{{recip.id}}">{{recip.title}}</button>
 </div>
 {% endfor %}
 </div>
@@ -46,8 +46,19 @@
 
 
 <script>
+function recipeInfo(recipeId){
+        $.ajax({
+            type: 'GET',
+            url: 'recipe/'+recipeId,
+            success: function (data) {
+                window.location = "/recipe/"+recipeId;
+            },
+            fail: function (data) {
+               window.location = "/error";
+            }
+        });
+}
 
-documen
 
 </script>
 

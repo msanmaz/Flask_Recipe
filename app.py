@@ -55,7 +55,7 @@ def getRecipeURL(query,url):
         import urllib.parse as urlparse
         from urllib.parse import urlencode
 
-    params = {'ids': query, 'apiKey': '9d90cc9dd21c45edb7f2f725d0554fd8'}
+    params = {'id': query, 'apiKey': '9d90cc9dd21c45edb7f2f725d0554fd8'}
 
     url_parts = list(urlparse.urlparse(url))
     query = dict(urlparse.parse_qsl(url_parts[4]))
@@ -65,11 +65,17 @@ def getRecipeURL(query,url):
 
     return urlparse.urlunparse(url_parts)
 
-@app.route('/recipe/<recipe_id>', methods=['GET'])
+@app.route('/recipe/<recipe_id>', methods=['GET','POST'])
 def recipe(recipe_id):
-    query =recipe_id
-    url = "https://api.spoonacular.com/recipes/informationBulk?ids="+recipe_id+"&includeNutrition=true"
-    r = requests.get(getRecipeURL(query,url))
-    data = r.json()
-    print(data)
-    make_response(render_template("recipelist.html", recipe_id=json.dumps(data)),200)
+    if request.method == 'GET':
+        url = "https://api.spoonacular.com/recipes/informationBulk?ids="+recipe_id+"&includeNutrition=true"
+        recipe_id = request.args.get('id')
+        r = requests.get(getRecipeURL(recipe_id,url))
+        data = r.json()
+        return render_template('recipelist.html', data=data)
+    return render_template('index.html')
+
+
+
+if __name__ == 'main':
+    app.run(Debug=True)
